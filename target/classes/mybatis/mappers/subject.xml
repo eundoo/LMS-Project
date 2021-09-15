@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.Subject.SubjectDao">
+
+	<select id="getAllSubjects" resultType="com.project.Subject.SubjectVO">
+		select sbj_no sbjNo,
+			   prfs_no prfsNo,
+			   sbj_division division,
+			   sbj_faculty faculty,
+			   sbj_major major,
+			   sbj_subject subject,
+			   sbj_quarter quarter,
+			   sbj_applied_credit appliedCredit,
+			   sbj_location location,
+			   sbj_class_time classTime,
+			   sbj_created_date createdDate,
+			   sbj_updated_date updatedDate
+		from lms_subject
+	</select>
+	<select id="getSubjectByNo" parameterType="int" resultType="com.project.Subject.SubjectVO">
+		select sbj_no sbjNo,
+			   prfs_no prfsNo,
+			   sbj_division division,
+			   sbj_faculty facCode,
+			   sbj_major majCode,
+			   sbj_subject sbjCode,
+			   sbj_quarter quarter,
+			   sbj_quota quota,
+			   sbj_reqcount reqCount,
+			   sbj_applied_credit appliedCredit,
+			   sbj_location location,
+			   sbj_class_time classTime,
+			   sbj_created_date createdDate,
+			   sbj_updated_date updatedDate
+		from lms_subject
+		where sbj_no = #{value}
+	</select>
+	
+	<update id="updateSubject" parameterType="com.project.Subject.SubjectVO">
+		update
+			lms_subject
+		set
+			sbj_quota = #{quota},
+			sbj_reqcount = #{reqCount}
+		where sbj_no = #{sbjNo}
+	</update>
+	
+	<select id="getAllSubjectByMajor" parameterType="string" resultType="com.project.Subject.SubjectDTO">
+		select 
+               S.sbj_no sbjNo,
+               C.comm_name major,
+               C1.comm_name quarter,
+               C2.comm_name location,
+               c3.comm_name subject,
+               P.prfs_name prfsName,
+               S.sbj_division division,
+               S.sbj_location location,
+			   S.sbj_applied_credit appliedCredit,
+               S.sbj_reqcount reqCount,
+               S.sbj_quota quota,
+			   S.sbj_class_time classTime,
+			   S.sbj_created_date createdDate,
+			   S.sbj_updated_date updatedDate
+		from lms_subject S, lms_user U, lms_common_code C, lms_common_code C1, 
+			 lms_common_code C2, lms_common_code C3, lms_professor P
+		where U.user_major_code = S.sbj_major
+		and U.user_major_code = #{value}
+        and S.sbj_major = c.comm_common_code
+        and S.sbj_quarter = C1.comm_common_code
+        and S.sbj_location = C2.comm_common_code
+        and S.sbj_subject = C3.comm_common_code
+        and S.prfs_no = P.prfs_no
+		
+	</select>
+</mapper>

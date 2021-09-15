@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.Professor.PrfsDao">
+
+	<insert id="insertResearch" parameterType="com.project.Professor.ResearchVO">
+		insert into lms_research
+		(research_no, prfs_no, research_title, research_area, research_issuer, research_attach_file, research_support_agency)
+		values
+		(research_seq.nextval, #{prfsNo} ,#{title}, #{area}, #{issuer}, #{attachFile}, #{supportAgency})
+	</insert>
+
+	<select id="getAllProfessors" resultType="com.project.Professor.ProfessorVO">
+		select prfs_no prfsNo,
+			   prfs_professor_id prfsId, 
+			   prfs_password password,
+			   prfs_name name,
+			   prfs_email email,
+			   prfs_birth birth,
+			   prfs_gender gender,
+			   prfs_faculty_code faculty,
+			   prfs_major_code major,
+			   prfs_created_date createdDate,
+			   prfs_updated_date updatedDate
+		from lms_professor
+	</select>
+	
+</mapper>

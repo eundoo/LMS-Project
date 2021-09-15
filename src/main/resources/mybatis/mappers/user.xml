@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.User.UserDao">
+
+	<select id="getUserByUserNo" parameterType="int" resultType="com.project.User.UserVO">
+		select 
+			U.user_no userNo, 
+			U.user_student_id studentId,
+			U.user_password password,
+			U.user_name name,
+			U.user_email email,
+			U.user_birth birth,
+			U.user_gender gender,
+			U.user_is_graduated isGraduated,
+            C.comm_name facCode,
+            C1.comm_name majCode,
+			U.user_created_date createdDate,
+			U.user_updated_date updatedDate
+		from lms_user U, lms_common_code C, lms_common_code C1
+		where user_no = #{value}
+        and U.user_faculty_code = C.comm_common_code
+        and U.user_major_code = C1.comm_common_code
+	</select>
+
+	<insert id="insertEnrolment" parameterType="com.project.User.EnrolmentVO">
+		insert into lms_user_enrolment
+		(enrolment_no, user_no, sbj_no)
+		values
+		(enrolment_seq.nextval, #{user.userNo}, #{subject.sbjNo})
+	</insert>
+	
+	<select id="getInfoByUserNo" parameterType="int" resultType="com.project.Subject.SubjectDTO">
+		select 
+		       S.sbj_no sbjNo,
+		       C.comm_name major,
+		       C1.comm_name quarter,
+		       C2.comm_name location,
+		       C3.comm_name subject,
+		       C4.comm_name faculty,
+		       P.prfs_name prfsName,
+		       G.grades_acquisition_credit acquisitionCredit,
+		       G.grades_got_grade gotGrade,
+		       S.sbj_subject sbjCode,
+		       S.sbj_division division,
+		       S.sbj_applied_credit appliedCredit,
+		       S.sbj_reqcount reqCount,
+		       S.sbj_quota quota,
+		       S.sbj_class_time classTime,
+		       S.sbj_created_date createdDate,
+		       S.sbj_updated_date updatedDate
+		from lms_subject S, lms_user U, lms_user_enrolment E, lms_grades G, lms_common_code C, lms_common_code C1, 
+		     lms_common_code C2, lms_common_code C3, lms_common_code C4, lms_professor P
+		where U.user_major_code = S.sbj_major
+		and u.user_no = E.user_no
+		and E.sbj_no = S.sbj_no
+		and U.user_no = #{value}
+		and G.user_no = U.user_no
+		and G.sbj_no = S.sbj_no
+		and S.sbj_major = c.comm_common_code
+		and S.sbj_quarter = C1.comm_common_code
+		and S.sbj_location = C2.comm_common_code
+		and S.sbj_subject = C3.comm_common_code
+		and S.sbj_faculty = C4.comm_common_code
+		and S.prfs_no = P.prfs_no
+	</select>
+	
+	<select id="getAppByUserNo" parameterType="int" resultType="com.project.User.ApplicationVO">
+		select A.app_no, 
+      		   A.user_no,
+               A.app_kind,
+		       A.app_status, 
+		       A.app_file, 
+		       A.app_description,
+		       A.app_title,
+		       A.app_uploaded_date,
+		       A.app_quarter quarter, 
+		       A.app_created_date, 
+		       A.app_updated_date
+		from lms_application A, lms_user U
+		where A.user_no = U.user_no
+		and U.user_no = #{value}
+	</select>
+	
+	<insert id="insertApplication" parameterType="com.project.User.ApplicationVO">
+		insert into lms_application
+		(app_no, user_no, app_kind, app_status, app_file, app_description, app_title, app_uploaded_date, app_quarter)
+		values
+		(application_seq.nextval, #{userNo}, #{kind}, #{status}, #{file}, #{description}, #{title}, #{uploadedDate}, #{quarter})
+	</insert>
+	
+</mapper>
