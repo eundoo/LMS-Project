@@ -22,4 +22,9 @@ public class PrfsServiceImpl implements PrfsService{
 	public List<ProfessorVO> getAllProfessors() throws Exception {
 		return prfsDao.getAllProfessors();
 	}
+	
+	@Override
+	public ProfessorVO getPrfsByPrfsNo(int prfsNo) {
+		return prfsDao.getPrfsByPrfsNo(prfsNo);
+	}
 }

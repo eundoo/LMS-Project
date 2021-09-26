@@ -46,16 +46,45 @@ table, th, td {	border: 1px solid black; border-collapse: collapse }
 			</tr>
 		</table>
 		<form id="drop-out">
-		<a href="/user/dropOutUpload">자퇴신청</a>
+			<a href="/user/dropOutUpload">자퇴신청</a>
 			<table>
+				<c:choose>
+				<c:when test="${empty apps}">
 				<tr>
+					<td>등록된 신청서가 존재하지 않습니다.</td>
+				</tr>
+				</c:when>
+				<c:otherwise>
+				<tr>
+					<th>신청번호</th>
 					<th>신청일자</th>
 					<th>신청학기</th>
-					<th>자퇴사유</th>
-					<th>사유</th>
+					<th>제목</th>
 					<th>처리구분</th>
-					<th>삭제</th>
+					<th>상태</th>
 				</tr>
+				<c:forEach var="value" items="${apps}">
+				<tr id="app-list">	
+					<td>${value.appNo }</td>
+					<td>${value.uploadedDate }</td>
+					<td>${value.quarter }</td>
+					<td>${value.title }</td>
+					<c:if test="${value.status eq 'W' }">
+						<td>${value.status }</td>
+						<td><button>삭제</button></td>
+					</c:if>
+					<c:if test="${value.status eq 'A' }">
+						<td>${value.status }</td>
+						<td>승인</td>
+					</c:if>
+					<c:if test="${value.status eq 'D' }">
+						<td>${value.status }</td>
+						<td>거절됨</td>
+					</c:if>
+				</tr>
+				</c:forEach>
+				</c:otherwise>
+				</c:choose>
 			</table>
 		</form>
 	</div>

@@ -10,4 +10,6 @@ public interface PrfsDao {
 	void insertResearch(ResearchVO research) throws Exception;
 	
 	List<ProfessorVO> getAllProfessors() throws Exception;
+	
+	ProfessorVO getPrfsByPrfsNo(int prfsNo);
 }

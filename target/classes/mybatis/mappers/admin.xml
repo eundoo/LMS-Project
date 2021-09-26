@@ -27,7 +27,7 @@
 		insert into lms_user
 		(user_no, user_student_id, user_password, user_faculty_code, user_major_code, user_email, user_birth, user_name, user_gender)
 		values
-		(user_seq.nextval, #{studentId}, #{password}, #{faculty}, #{major}, #{email}, #{birth}, #{name}, #{gender})
+		(user_seq.nextval, #{studentId}, #{password}, #{facCode}, #{majCode}, #{email}, #{birth}, #{name}, #{gender})
 	</insert>
 	
 	<select id="getUserById" parameterType="string" resultType="com.project.User.UserVO">
@@ -41,6 +41,7 @@
 			   user_email email,
 			   user_birth birth,
 			   user_gender gender,
+			   user_is_user isUser,
 			   user_is_graduated isGraduated,
 			   user_created_date createdDate,
 			   user_updated_date updatedDate
@@ -63,8 +64,9 @@
 			   prfs_email email,
 			   prfs_birth birth,
 			   prfs_gender gender,
-			   prfs_faculty_code faculty,
-			   prfs_major_code major,
+			   prfs_faculty_code facCode,
+			   prfs_major_code majCode,
+			   prfs_is_prfs isPrfs,
 			   prfs_created_date createdDate,
 			   prfs_updated_date updatedDate
 		from lms_professor
@@ -78,4 +80,5 @@
 		values
 		(subject_seq.nextval, #{prfsNo}, #{division}, #{quarter}, #{majCode}, #{sbjCode}, #{appliedCredit}, #{location}, #{classTime}, #{facCode}, #{quota})
 	</insert>
+
 </mapper>

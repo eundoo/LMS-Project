@@ -3,6 +3,23 @@
 
 <mapper namespace="com.project.User.UserDao">
 
+	<select id="getUserByMajor" parameterType="string" resultType="com.project.User.UserDTO">
+		select 
+			U.user_no no,
+			U.user_student_id studentId,
+			U.user_name name,
+			U.user_email email,
+			U.user_birth birth,
+			U.user_gender gender,
+			U.user_is_graduated isGraduated,
+            A.app_title title,
+            A.app_status status
+		from lms_user U, lms_professor P, lms_application A
+		where U.user_major_code = P.prfs_major_code 
+        and U.user_no = A.user_no
+        and P.prfs_major_code = #{value}
+    </select>    
+
 	<select id="getUserByUserNo" parameterType="int" resultType="com.project.User.UserVO">
 		select 
 			U.user_no userNo, 
@@ -15,11 +32,32 @@
 			U.user_is_graduated isGraduated,
             C.comm_name facCode,
             C1.comm_name majCode,
+            U.user_is_user isUser,
 			U.user_created_date createdDate,
 			U.user_updated_date updatedDate
 		from lms_user U, lms_common_code C, lms_common_code C1
 		where user_no = #{value}
         and U.user_faculty_code = C.comm_common_code
+        and U.user_major_code = C1.comm_common_code
+	</select>
+	
+	<select id="getAllUsers" resultType="com.project.User.UserVO">
+		select 
+			U.user_no userNo, 
+			U.user_student_id studentId,
+			U.user_password password,
+			U.user_name name,
+			U.user_email email,
+			U.user_birth birth,
+			U.user_gender gender,
+			U.user_is_graduated isGraduated,
+            C.comm_name facCode,
+            C1.comm_name majCode,
+            U.user_is_user isUser,
+			U.user_created_date createdDate,
+			U.user_updated_date updatedDate
+		from lms_user U, lms_common_code C, lms_common_code C1
+        where U.user_faculty_code = C.comm_common_code
         and U.user_major_code = C1.comm_common_code
 	</select>
 
@@ -29,6 +67,21 @@
 		values
 		(enrolment_seq.nextval, #{user.userNo}, #{subject.sbjNo})
 	</insert>
+	
+	<select id="getEnrolmentByUserNo" parameterType="int" resultType="com.project.User.EnrolmentVO2">
+		select enrolment_no no,
+			   user_no userNo,
+			   sbj_no sbjNo
+		from lms_user_enrolment
+		where user_no = #{value}
+	</select>
+	<select id="getEnrolmentBySbjNo" parameterType="int" resultType="com.project.User.EnrolmentVO2">
+		select enrolment_no no,
+			   user_no userNo,
+			   sbj_no sbjNo
+		from lms_user_enrolment
+		where sbj_no = #{value}
+	</select>
 	
 	<select id="getInfoByUserNo" parameterType="int" resultType="com.project.Subject.SubjectDTO">
 		select 
@@ -66,27 +119,90 @@
 	</select>
 	
 	<select id="getAppByUserNo" parameterType="int" resultType="com.project.User.ApplicationVO">
-		select A.app_no, 
-      		   A.user_no,
-               A.app_kind,
-		       A.app_status, 
-		       A.app_file, 
-		       A.app_description,
-		       A.app_title,
+		select A.app_no appNo, 
+      		   A.user_no userNo,
+               A.app_kind kind,
+		       A.app_status status, 
+		       A.app_file upFile, 
+		       A.app_description description,
+		       A.app_title title,
 		       A.app_uploaded_date,
-		       A.app_quarter quarter, 
-		       A.app_created_date, 
-		       A.app_updated_date
+		       A.app_quarter quarter,
+		       A.app_uploaded_date uploadedDate
 		from lms_application A, lms_user U
 		where A.user_no = U.user_no
 		and U.user_no = #{value}
 	</select>
 	
+	<select id="getApplicationByAppNo" parameterType="int" resultType="com.project.User.ApplicationVO">
+		select A.app_no appNo, 
+      		   U.user_no userNo,
+               A.app_kind kind,
+		       A.app_status status, 
+		       A.app_file upFile, 
+		       A.app_description description,
+		       A.app_title title,
+		       A.app_uploaded_date,
+		       A.app_quarter quarter,
+		       A.app_uploaded_date uploadedDate
+		from lms_application A, lms_user U
+		where A.user_no = U.user_no
+		and A.app_no = #{value}
+	</select>
+	
 	<insert id="insertApplication" parameterType="com.project.User.ApplicationVO">
 		insert into lms_application
-		(app_no, user_no, app_kind, app_status, app_file, app_description, app_title, app_uploaded_date, app_quarter)
+		(app_no, user_no, app_kind, app_file, app_description, app_title, app_uploaded_date, app_quarter)
 		values
-		(application_seq.nextval, #{userNo}, #{kind}, #{status}, #{file}, #{description}, #{title}, #{uploadedDate}, #{quarter})
+		(application_seq.nextval, #{userNo}, #{kind}, #{upFile}, #{description}, #{title}, #{uploadedDate}, #{quarter})
+	</insert>
+	<!-- 
+	<insert id="insertFileItem" parameterType="com.project.User.FileItem">
+		insert into lms_file_items
+		(file_items_no, file_items_name, file_items_type, file_items_size, file_items_file_no)
+		values
+		(file_items_seq.nextval, #{name}, #{type}, #{size}, #{fileNo})
+	</insert>
+	 -->
+	<update id="updateStatus" parameterType="com.project.User.ApplicationVO">
+		update lms_application
+		set app_status = #{status}
+		where app_no = #{appNo}
+	</update>
+	
+	<insert id="insertGrades" parameterType="com.project.User.GradesVO">
+		insert into lms_grades
+		(grades_no, sbj_no, grades_acquisition_credit, grades_got_grade, user_no)
+		values
+		(grades_seq.nextval, #{sbjNo}, #{acquisitionCredit}, #{gotGrade}, #{userNo})
 	</insert>
 	
+	<select id="getScoresByUserNoGroupByCommName" parameterType="int" resultType="com.project.Subject.SubjectDTO">
+		select  distinct C.comm_name quarter, 
+				sum(S.sbj_applied_credit) appliedCredit,
+				sum(G.grades_acquisition_credit) acquisitionCredit
+				from lms_subject S, lms_common_code C, lms_user U,
+				lms_user_enrolment E, lms_grades G
+				where S.sbj_quarter = C.comm_common_code
+				and E.user_no = U.user_no
+				and E.sbj_no = S.sbj_no
+				and U.user_no = #{value}
+				and G.sbj_no = S.sbj_no
+				and G.user_no = U.user_no
+				group by C.comm_name
+	</select>
+	
+	<select id="getScoresByUserNoGroupBySbjDivision" parameterType="int" resultType="com.project.Subject.SubjectDTO">
+		select  distinct S.sbj_division division,
+                sum(G.grades_acquisition_credit) acquisitionCredit
+				from lms_subject S, lms_common_code C, lms_user U,
+				lms_user_enrolment E, lms_grades G
+				where S.sbj_quarter = C.comm_common_code
+				and E.user_no = U.user_no
+				and E.sbj_no = S.sbj_no
+				and U.user_no = #{value}
+				and G.sbj_no = S.sbj_no
+				and G.user_no = U.user_no
+				group by S.sbj_division
+	</select>
 </mapper>

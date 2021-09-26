@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Professor.PrfsService;
 import com.project.Professor.ProfessorVO;
 import com.project.Subject.SubjectService;
 import com.project.Subject.SubjectVO;
+import com.project.User.UserService;
 import com.project.User.UserVO;
 import com.project.web.annotation.LoginUser;
 
@@ -27,6 +29,7 @@ public class AdminController {
 
 	@Autowired AdminService adminService;
 	@Autowired PrfsService prfsService;
+	@Autowired UserService userService;
 	
 	@GetMapping("/layout")
 	public String layout() {
@@ -177,6 +180,53 @@ public class AdminController {
 	adminService.insertSubjects(subject);
 	return "redirect:/admin/main";
 	
+	}
+	
+	@GetMapping("/allUsers")
+	public String allUsers() {
+		return "admin/allUsers";
+	}
+	
+	@RequestMapping("/list")
+	@ResponseBody //pom.xml에 jasonbind를 추가하고 ResponseBody를 추가하면 무조건 json형식으로 ..
+	//ResponseBody를 적지 않으면 url을 찾는다...
+	//ResponseBody를 적으면 아래 allUsers가 뷰페이지 이름이 된다. 
+	//요청핸들러가 반환하는거를 응답으로 내려주는것이다.
+	//RestController를 붙이면 굳이 ResponseBody를 안붙여줘도 된다.
+	public List<CommonCodeVO> list(Model model) throws Exception {
+		List<CommonCodeVO> comm = adminService.getCommCodeByParentCode("CTG0");
+		model.addAttribute("comm", comm);
+		return comm; //Json형식으로 Html에 보여짐
+	}
+	
+	@RequestMapping("/userList")
+	@ResponseBody
+	public Map<String, Object> userList(@RequestParam("ctg")String category) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println(category);
+		//여기까지 잘 찍히는테 if부터 안먹힘~!~! 8/9강의 16:42부터~
+		if(category.equals("CTG01")) {
+			List<UserVO> users = userService.getAllUsers();
+			map.put("users", users);
+		}
+		if(category.equals("CTG02")) {
+			List<ProfessorVO> prfs = prfsService.getAllProfessors();
+			map.put("prfs", prfs);
+		}
+		return map;
+		
+	}
+	
+	@RequestMapping("/detail")
+	@ResponseBody
+	public Map<String, Object> detail(@RequestParam(name="no", required = true) int allNo) {
+		UserVO user = userService.getUserByUserNo(allNo);
+		ProfessorVO prfs = prfsService.getPrfsByPrfsNo(allNo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user", user);
+		map.put("prfs", prfs);
+		return map;
 	}
 	
 }

@@ -20,11 +20,11 @@ public class SubjectDTO {
 	public String prfsName;
 	public String location;
 	public int acquisitionCredit;
-	public String gotGrade;
+	public Double gotGrade;
 	public String sbjCode;
-	public String appliedCredit;
-	public String reqCount;
-	public String quota;
+	public int appliedCredit;
+	public int reqCount;
+	public int quota;
 	public String classTime; 
 	public Date createdDate;
 	public Date updatedDate;

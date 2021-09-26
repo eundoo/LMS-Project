@@ -18,8 +18,9 @@ public class ProfessorVO {
 	private String email;
 	private String birth;
 	private String gender;
-	private String faculty;
-	private String major;
+	private String facCode;
+	private String majCode;
+	private String isProfessor;
 	private Date createdDate;
 	private Date updatedDate;
 }

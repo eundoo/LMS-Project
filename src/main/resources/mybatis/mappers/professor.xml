@@ -18,11 +18,31 @@
 			   prfs_email email,
 			   prfs_birth birth,
 			   prfs_gender gender,
-			   prfs_faculty_code faculty,
-			   prfs_major_code major,
+			   prfs_faculty_code facCode,
+			   prfs_major_code majCode,
 			   prfs_created_date createdDate,
 			   prfs_updated_date updatedDate
 		from lms_professor
+	</select>
+	
+	<select id="getPrfsByPrfsNo" resultType="com.project.Professor.ProfessorVO" parameterType="int">
+		select 
+			P.prfs_no prfsNo,
+			P.prfs_professor_id prfsId, 
+			P.prfs_password password,
+			P.prfs_name name,
+			P.prfs_email email,
+			P.prfs_birth birth,
+			P.prfs_gender gender,
+			C.comm_name facCode,
+			C1.comm_name majCode,
+			P.prfs_is_prfs isPrfs,
+			P.prfs_created_date createdDate,
+			P.prfs_updated_date updatedDate
+		from lms_professor P, lms_common_code C, lms_common_code C1
+		where prfs_no = #{value}
+        and P.prfs_faculty_code = C.comm_common_code
+        and P.prfs_major_code = C1.comm_common_code
 	</select>
 	
 </mapper>

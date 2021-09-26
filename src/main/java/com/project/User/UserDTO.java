@@ -1,7 +1,5 @@
 package com.project.User;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,19 +7,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserVO {
+public class UserDTO {
 
-	private int userNo;
+	private int no;
 	private int studentId;
-	private String password;
-	private String facCode;
-	private String majCode;
+	private String name;
 	private String email;
 	private String birth;
-	private String name;
 	private String gender;
 	private String isGraduated;
-	private String isUser;
-	private Date createdDate;
-	private Date updatedDate;	
+	private String title;
+	private String status;
 }

@@ -1,8 +1,9 @@
 package com.project.User;
 
 import java.util.Date;
+import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.project.FileItem.FileItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,15 +15,15 @@ import lombok.ToString;
 public class ApplicationVO {
 
 	private int appNo;
-	private int userNo;
+	private int userNo; //
 	private String kind; //
-	private String status; //
-	private MultipartFile file; //
+	private String status; 
+	private String upFile; //
 	private String description; //
 	private String title; //
 	private String quarter; //
-	private Date uploadedDate; //
+	private String uploadedDate; //
 	private Date createdDate;
 	private Date updatedDate;
-	
+	//8-3-1 1:00:00
 }

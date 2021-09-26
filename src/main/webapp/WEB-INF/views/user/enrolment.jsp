@@ -11,8 +11,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <title>User Enrolment</title>
 <style type="text/css">
+.container {
+}
 #container-in {
-	margin-left: 300px;
+	width: 1080px;
+	margin: 70px 50px 0 250px;
 }
 </style>
 </head>
@@ -24,13 +27,22 @@
 		<table class="table" id="table-sbj-list">
 			<thead>
 				<tr>
-					<th scope="col">수강신청 페이지</th>
+					<th>과목 번호</th>
+					<th>학과</th>
+					<th>과목 명</th>
+					<th>교수 명</th>
+					<th>학기</th>
+					<th>위치</th>
+					<th>신청 학점</th>
+					<th>신청 인원/총 원</th>
+					<th>신청 가능</th>
+					<th>교시</th>
+					<th>신청</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="subject" items="${subjects}" varStatus="loop">
-				<tr class="align-middle">
-					<th scope="row"></th>
+				<tr>
 					<td>${subject.sbjNo}</td>
 					<td>${subject.major}</td>
 					<td>${subject.subject}</td>
@@ -42,7 +54,8 @@
 					<td><span id="sbj-available-quota-${subject.sbjNo }">${subject.quota - subject.reqCount }</span> 명</td>
 					<td>${subject.classTime}</td>
 					<td>
-						<button class="btn btn-outline-primary btn-sm ${(subject.quota eq subject.reqCount or empty LOGINED_USER) ? 'disabled' : '' }" 
+						<button class="btn btn-outline-primary btn-sm 
+						${(subject.quota eq subject.reqCount or empty LOGINED_USER) ? 'disabled' : '' }" 
 						id="btn-req-sbj-${subject.sbjNo }"
 						data-sbj-no="${subject.sbjNo }">수강신청</button>
 					</td>
@@ -149,6 +162,14 @@ $(function() {
 	}
 
 	// 수강신청하기 버튼 클릭시 AJAX 방식으로 서버에 수강신청정보를 전달해서 수강신청처리를 요청한다.
+	
+	//var thisErmt = $(this)
+	//var ermt = thisErmt.data('ermt-no')
+	//console.log(thisErmt)
+	//console.log(ermt)
+	//if(thisErmt == ermt) {
+	//	ermt.attr('disabled')
+	//}
 	$("#table-sbj-list tbody .btn-outline-primary").click(function() {
 		var $btn = $(this);
 		var sbjNo = $btn.data('sbj-no');
@@ -157,7 +178,6 @@ $(function() {
 			data: {sbjNo:sbjNo},
 			success: function() {
 				createSimpleToast("수강신청이 완료되었습니다.");
-				$btn.remove();
 			},
 			error: function() {
 				createSimpleToast("수강신청 중 오류가 발생하였습니다.");

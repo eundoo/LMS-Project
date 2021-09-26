@@ -37,12 +37,12 @@
 				<input id="input-student-name" name="name">
 			</section>
 			<section>
-				<select id="select-fac" name="faculty">
+				<select id="select-fac" name="facCode">
 				<c:forEach var="code" items="${faculty}">
 					<option id="option-fac" value="${code.commonCode }">${code.codeName}</option>
 				</c:forEach>
 				</select>
-				<select id="select-major" name="major">
+				<select id="select-major" name="majCode">
 					<option>전공</option>
 				</select>
 				<label for="input-student-email">학생 이메일</label>
@@ -65,12 +65,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	$('[name=faculty]').change(function() {
+	$('[name=facCode]').change(function() {
 		var fac = $(this).val()
 		doFiltering(fac)
 	})
 	
-	$('[name=major]').change(function() {
+	$('[name=majCode]').change(function() {
 		var fac = $(this).val()
 		console.log(fac)
 		doFiltering(fac)

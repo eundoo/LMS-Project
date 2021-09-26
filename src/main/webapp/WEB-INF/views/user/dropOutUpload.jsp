@@ -31,7 +31,7 @@ table, th, td {	border: 1px solid black; border-collapse: collapse }
 <div class="container">
 	<div id="container-in">
 		<h1>User AppForm</h1>
-		<form id="drop-out-of" enctype="multipart/form-data" action="/user/dropOutUpload" method="post">
+		<form id="drop-out-of" action="/user/dropOutUpload" method="post">
 			<span>신청일자</span>
 			<input name="uploadedDate" type="date">
 			<span>신청학기</span>
@@ -51,9 +51,9 @@ table, th, td {	border: 1px solid black; border-collapse: collapse }
 				<textarea name="title" class="board" rows="1" cols="55" required></textarea>
 			</div>
 			<div>
-				<textarea name="description" id="main-board"class="board" name="" required></textarea>
+				<textarea name="description" id="main-board"class="board" required></textarea>
 			</div>
-			<input id="upload" type="file" value="파일 업로드">
+			<input id="upload" value="파일 업로드" name="upFile">
 			<button type="submit">신청</button>
 		</form>
 	</div>

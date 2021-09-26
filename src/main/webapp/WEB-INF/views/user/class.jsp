@@ -11,115 +11,175 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <title>User Class</title>
 <style type="text/css">
+table, th, td {border: 1px solid #2e8a9d; border-collapse: collapse }
+section {margin:0}
 #container-in {
-	margin-left: 300px;
+	margin: 50px 50px 50px 350px;
 }
 
-table, th, td {	border: 1px solid black; border-collapse: collapse }
+.division {
+	margin: 10px 0;
+}
+
+#info-table {
+	border-width: 2px; 
+}
 
 #total-table {
-	float : left
+	float : left;
 }
+
+#space-pic {
+	height:110px;
+}
+
+.table-title {
+	background-color: #a7dbf796;
+}
+
+#score-table {
+	float : right;
+}
+
 </style>
 </head>
 <%@include file = "/WEB-INF/views/common/userLayout.jsp"%>
 <body>
-<div class="container">
+<div id="container">
 	<div id="container-in">
 		<h1>User Class</h1>
-	<table>
-		<tr>
-			<th rowspan="3">사진</th>
-			<td>학번</td>
-			<td>${user.studentId }</td>
-			<td>이름</td>
-			<td>${user.name }</td>
-			<td>성별</td>
-			<td>${user.gender }</td>
-			<td>생년월일</td>
-			<td>${user.birth }</td>
-			<td>이메일</td>
-			<td>${user.email }</td>
-		</tr>
-		<tr>
-			<td>학부</td>
-			<td>${user.facCode }</td>
-			<td>학년</td>
-			<td>22222</td>
-			<td>전공</td>
-			<td>${user.majCode}</td>
-		</tr>
-		<tr>
-			<td>이수</td>
-			<td>33333</td>
-			<td>연계전공</td>
-			<td>-</td>
-			<td>부전공</td>
-			<td>-</td>
-			<td>기타</td>
-			<td colspan="3">-</td>
-		</tr>
-	</table>
-	
-	<table style="width:100%">
-		<tr>
-			<td rowspan="2">교양선택</td>
-			<td rowspan="2">교양필수</td>
-			<td colspan="3">제1전공</td>
-			<td rowspan="2">취득</td>
-			<td rowspan="2">평점</td>
-			<td rowspan="2">백분</td>
-		</tr>
-		<tr>
-			<td colspan="1">학기</td>
-			<td colspan="1">전공</td>
-			<td colspan="1">계</td>
-		</tr>
-		<tr>
-			<td colspan="1">?</td>
-			<td colspan="1">?</td>
-			<td colspan="1">?</td>
-			<td colspan="1">${user.majCode }</td>
-			<td colspan="1">?</td>
-			<td colspan="1">?</td>
-			<td colspan="1">?</td>
-			<td colspan="1">?</td>
-		</tr>
-	</table>
-	<table id="total-table">
-		<tr>
-			<th>년도/학기</th>
-			<th>신청학점</th>
-			<th>취득학점</th>
-			<th>평점평균</th>
-		</tr>
-		<tr>
-			<td>?</td>
-			<td>?</td>
-			<td>?</td>
-			<td>?</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<th>이수구분</th>
-			<th>과목코드</th>
-			<th>과목명</th>
-			<th>신청학점</th>
-			<th>등급</th>
-			<th>재이수</th>
-		</tr>
-	<c:forEach var="subject" items="${subjects}">
-		<tr>
-			<td>${subject.division }</td>
-			<td>${subject.sbjCode }</td>
-			<td>${subject.subject }</td>
-			<td>${subject.appliedCredit }</td>
-			<td>${subject.gotGrade }</td>
-			<td>-</td>
-		</tr>
-	</c:forEach>
-	</table>
+		<table class="division" id="head-table" style="width:100%">
+			<colgroup>
+				<col width="4%">
+				<col width="5%">
+				<col width="10%">
+				<col width="5%">
+				<col width="10%">
+				<col width="5%">
+				<col width="10%">
+				<col width="5%">
+				<col width="10%">
+				<col width="5%">
+				<col width="11%">
+					
+			</colgroup>
+			<tr>
+				<th rowspan="3" id="space-pic">사진</th>
+				<td class="table-title">학번</td>
+				<td>${user.studentId }</td>
+				<td class="table-title">이름</td>
+				<td>${user.name }</td>
+				<td class="table-title">성별</td>
+				<td>${user.gender }</td>
+				<td class="table-title">생년월일</td>
+				<td>${user.birth }</td>
+				<td class="table-title">이메일</td>
+				<td>${user.email }</td>
+			</tr>
+			<tr>
+				<td class="table-title">학부</td>
+				<td>${user.facCode }</td>
+				<td class="table-title">전공</td>
+				<td>${user.majCode}</td>
+				<td class="table-title">학년</td>
+				<td>?</td>
+			</tr>
+			<tr>
+				<td class="table-title">이수</td>
+				<td>-</td>
+				<td class="table-title">연계전공</td>
+				<td>-</td>
+				<td class="table-title">부전공</td>
+				<td>-</td>
+				<td class="table-title">특이사항</td>
+				<td colspan="3">-</td>
+			</tr>
+		</table>
+		<table class="division" style="width:100%">
+			<tr>
+				<td class="table-title" rowspan="2">교양선택</td>
+				<td class="table-title" rowspan="2">교양필수</td>
+				<td class="table-title" colspan="3">제1전공</td>
+				<td class="table-title" rowspan="2">취득</td>
+				<td class="table-title" rowspan="2">평점</td>
+				<td class="table-title" rowspan="2">백분</td>
+			</tr>
+			<tr>
+				<td class="table-title" colspan="1">학기</td>
+				<td class="table-title" colspan="1">전공</td>
+				<td class="table-title" colspan="1">계</td>
+			</tr>
+			<tr>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+				<td colspan="1">?</td>
+			</tr>
+		</table>
+		<table id="total-table" style="width:30%">
+			<tr>
+				<th class="table-title">년도/학기</th>
+				<th class="table-title">신청학점</th>
+				<th class="table-title">취득학점</th>
+				<th class="table-title">평점평균</th>
+			</tr>
+		<c:forEach var="score" items="${scores}">
+			<tr>
+				<td>${score.quarter }</td>
+				<td>${score.appliedCredit }</td>
+				<td>${score.acquisitionCredit }</td>
+				<td>-</td>
+			</tr>
+		</c:forEach>
+
+		</table>
+		<table id="score-table" style="width:69.5%">
+			<tr>
+				<th class="table-title">이수구분</th>
+				<th class="table-title">과목코드</th>
+				<th class="table-title">과목명</th>
+				<th class="table-title">신청학점</th>
+				<th class="table-title">등급</th>
+				<th class="table-title">재이수</th>
+			</tr>
+			<c:forEach var="subject" items="${subjects}">
+			<tr>
+				<td>${subject.division }</td>
+				<td>${subject.sbjCode }</td>
+				<td>${subject.subject }</td>
+				<td>${subject.appliedCredit }</td>
+				<c:if test="${subject.gotGrade eq '4.5' }">
+					<td>A+</td>
+				</c:if>
+				<c:if test="${subject.gotGrade eq '4' }">
+					<td>A</td>
+				</c:if>
+				<c:if test="${subject.gotGrade eq '3.5' }">
+					<td>B+</td>
+				</c:if>
+				<c:if test="${subject.gotGrade eq '3' }">
+					<td>B</td>
+				</c:if>
+				<c:if test="${subject.gotGrade eq '2.5' }">
+					<td>C+</td>
+				</c:if>
+				<c:if test="${subject.gotGrade eq '2' }">
+					<td>C</td>
+				</c:if>
+				<c:if test="${subject.gotGrade lt '2' }">
+					<td>F</td>
+				</c:if>
+				<c:if test="${empty subject.gotGrade }">
+					<td>-</td>
+				</c:if>
+				<td>-</td>
+			</tr>
+		</c:forEach>
+		</table>
 	</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
